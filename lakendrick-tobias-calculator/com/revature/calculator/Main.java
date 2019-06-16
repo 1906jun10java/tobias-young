@@ -16,13 +16,17 @@ public class Main {
 		in2 = secondInput();
 		switch(op) {
 		case 'a': ans = Operators.addition(in1, in2);
+			break;	
 		case 's': ans = Operators.subtraction(in1, in2);
+			break;
 		case 'm': ans = Operators.multiplication(in1, in2);
+			break;
 		case 'd': ans = Operators.division(in1, in2);
+			break;
 		default: System.out.println("unknown error");
-		
-		System.out.println(ans);
 		}
+		
+		System.out.println("the answer is: " + ans);
 	}
 
 
@@ -38,7 +42,6 @@ public class Main {
 				sc.next();
 			}
 		}
-		sc.close();
 		return in1;
 	}
 	
@@ -61,23 +64,27 @@ public class Main {
 	public static char operatorChoice() {
 		Scanner sc2 = new Scanner(System.in);
 		boolean condition = true;
-		String in1 = "z";
-		System.out.println("Enter 'a' for Addition");
-		System.out.println("Enter 's' for Subtraction");
-		System.out.println("Enter 'm' for Multiplication");
-		System.out.println("Enter 'd' for Division");
+		char in1 = 'z';
+		System.out.println("Enter 'a' for Addition \nEnter 's' for Subtraction \nEnter 'm' for Multiplication \nEnter 'd' for Division");
 		while(condition) {
-			in1 = sc2.next();
-			switch(in1.charAt(0)) {
-			case 'a':break;
-			case 's':break;
-			case 'm':break;
-			case 'd':break;
-			default: continue;
+			try{in1 = sc2.next().charAt(0);}
+			catch(Exception e) {
+				System.out.println("Invalid input. 'a' for Addition, 's' for Subtraction, 'm' for Multiplication, 'd' for Division");
+				sc2.next();
+			}
+			switch(in1) {
+			case 'a':condition = false;
+				break;
+			case 's':condition = false; 
+				break;
+			case 'm':condition = false; 
+				break;
+			case 'd':condition = false; 
+				break;
+			//default: condition = true;
 			}
 		}
-		sc2.close();
-		return in1.charAt(0);
+		return in1;
 	}		
 }
 
