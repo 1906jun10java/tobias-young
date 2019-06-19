@@ -1,16 +1,40 @@
 package com.revature.strings;
 
+import java.util.Arrays;
 
 public class ReversePalindromes {
 	public static void main(String[] args) {
-		System.out.println(reverse("letsdisplaythisbetter"));
-		System.out.println(isAPalindrome("oozyratinasanitaryzoo"));
+		System.out.println(recursiveReverse("notapalindrome"));
+		System.out.println(recursiveIsAPalindrome("dogeeseseegod"));
 	}
 	
+	public static boolean recursiveIsAPalindrome(String str) {
+		char[] breakdown = str.toCharArray();
+		int length = str.length();
+		//base case
+		if(length == 1 || length == 0) {
+			return true;
+		}
+		if(breakdown[0] == breakdown[length-1]) {
+			return recursiveIsAPalindrome(String.valueOf(Arrays.copyOfRange(breakdown, 1, length -1)));
+		}
+		else
+			return false;
+	}
+	
+	public static String recursiveReverse(String str) {
+		char[] breakdown = str.toCharArray();
+		//base case
+		if (str.length() == 1) {
+			return str;
+		}
+		
+		return str.charAt(str.length() - 1) + recursiveReverse(String.valueOf(Arrays.copyOf(breakdown, str.length() - 1)));
+	}
 	
 	public static String reverse(String str) {
 		if(isAPalindrome(str)) {
-			return str;
+			return str + " Palindrome";
 		}
 		int length = str.length();
 		char[] reversal = str.toCharArray();
