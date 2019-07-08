@@ -1,0 +1,8 @@
+--Create a program in Java using JDBC and the DAO pattern to connect to your database.
+--Store your database credentials in a properties file. 
+
+--Write a prepared statement which prints each department's name and average salary to the console in Eclipse/STS. 
+
+--Write another prepared or statement to insert a new Employee.
+
+--Submit your code to your repository as a Java project called “Week2CodeChallenge”, and include the .sql file with all of your entity creation statements in the same location. 
