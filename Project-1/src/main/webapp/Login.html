@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ERMS Login</title>
+<link rel="stylesheet" href="LogInForm.css">
+</head>
+<body>
+	<div class="wrapper fadeInDown">
+		<div id="formcontent">
+
+			<div class="fadeIn first">
+				<h1 id="banner">Employee Reimbursement Management System</h1>
+			</div>
+			<div>
+				<form action="login" method="POST">
+					<fieldset>
+						<legend class="fadeIn second">username:</legend>
+						<input required autocomplete="off" name="username"
+							class="fadeIn second" id="username" />
+					</fieldset>
+					<fieldset>
+						<legend class="fadeIn third">password:</legend>
+						<input required autocomplete="off" type="password" name="password"
+							class="fadeIn third" />
+					</fieldset>
+					<br> <input type="submit" value="login" class="fadeIn fourth"
+						id="submit" />
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -15,7 +15,6 @@ import com.revature.dao.ReimbursementDAO;
 public class ReimbursementDAOImp implements ReimbursementDAO {
 
 	public static ConnFactory cf = ConnFactory.getInstance();
-	public static ReimbursementDAOImp rdao = new ReimbursementDAOImp();
 
 	@Override
 	public List<Reimbursement> getReimbursementList(int manager_id) throws SQLException {

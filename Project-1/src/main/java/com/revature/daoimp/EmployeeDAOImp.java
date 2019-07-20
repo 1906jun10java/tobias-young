@@ -14,7 +14,6 @@ import com.revature.dao.EmployeeDAO;
 public class EmployeeDAOImp implements EmployeeDAO {
 
 	public static ConnFactory cf = ConnFactory.getInstance();
-	public static EmployeeDAOImp edao = new EmployeeDAOImp();
 
 	@Override
 	public Employee getEmployeeInfo(int emp_id) throws SQLException {
@@ -65,24 +64,7 @@ public class EmployeeDAOImp implements EmployeeDAO {
 		return rs.first();
 	}
 
-	@Override
-	public int Login(String username, String password) throws SQLException {
-		List<Employee> eList = getEmployeeList();
-		Employee e = new Employee();
-		for(Employee emp : eList) {
-			if(username == emp.getUsername()) {
-				e = emp;
-			}
-		}
-		if(e.getPassword() == password) {
-			if(isManager(e.getEmp_id())) {
-				return 2;
-			} else {
-				return 1;
-			}
-		}
-		return 0;
-	}
+	
 	
 	public List<Employee> getEmployeeList() throws SQLException {
 		List<Employee> empList = new ArrayList<>();

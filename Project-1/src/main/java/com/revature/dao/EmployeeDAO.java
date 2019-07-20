@@ -13,6 +13,4 @@ public interface EmployeeDAO {
 	public abstract void createEmployee(int manager_id, String name, String username, String password) throws SQLException;
 	
 	public abstract boolean isManager(int emp_id) throws SQLException;
-	
-	public abstract int Login(String username, String password) throws SQLException;
 }
