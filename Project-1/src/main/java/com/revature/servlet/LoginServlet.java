@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.revature.beans.Credentials;
 import com.revature.beans.Employee;
 import com.revature.service.LoginService;
 
@@ -16,7 +17,6 @@ import com.revature.service.LoginService;
 public class LoginServlet extends HttpServlet {
 
 	/**
-	 * 
 	 */
 	private static final long serialVersionUID = -7683535433031041472L;
 	private LoginService login;
@@ -28,13 +28,16 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Employee emp = null;
 		HttpSession session = req.getSession();
-		emp = login.Login(req.getParameter("username"), req.getParameter("password"));
-		if(emp != null) {
-			session.setAttribute("emp_ID", emp.getEmp_id());
-			session.setAttribute("name", emp.getEmp_name());
-			resp.sendRedirect("menu");
+		Credentials creds = new Credentials(req.getParameter("username"), req.getParameter("password"));
+		Employee e = login.Login(creds);
+		if (e != null) {
+			session.setAttribute("employeeId", e.getEmp_id());
+			session.setAttribute("username", e.getUsername());
+			session.setAttribute("name", e.getEmp_name());
+			session.setAttribute("managerID", e.getManager_id());
+			session.setAttribute("problem", null);
+			resp.sendRedirect("EmployeeMenu.html");
 		} else {
 			session.setAttribute("problem", "invalid credentials");
 			resp.sendRedirect("login");

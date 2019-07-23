@@ -14,11 +14,9 @@ import com.revature.dao.ReimbursementDAO;
 
 public class ReimbursementDAOImp implements ReimbursementDAO {
 
-	public static ConnFactory cf = ConnFactory.getInstance();
-
 	@Override
 	public List<Reimbursement> getReimbursementList(int manager_id) throws SQLException {
-		Connection conn = cf.getConnection();
+		Connection conn = ConnFactory.getConnectionFromFile("database.properties");
 		String sql = "SELECT * FROM REIMBURSEMENTS WHERE MANAGER_ID = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, manager_id);
@@ -35,7 +33,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 
 	@Override
 	public List<Reimbursement> viewMyReimbursements(int emp_id) throws SQLException {
-		Connection conn = cf.getConnection();
+		Connection conn = ConnFactory.getConnectionFromFile("database.properties");
 		String sql = "SELECT * FROM REIMBURSEMENTS WHERE EMP_ID = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, emp_id);
@@ -52,7 +50,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 
 	@Override
 	public void changeReimbursementStatus(int reimbursement_id, String update) throws SQLException {
-		Connection conn = cf.getConnection();
+		Connection conn = ConnFactory.getConnectionFromFile("database.properties");
 		String sql = "UPDATE REIMBURSEMENTS SET REIMBURSEMENT_STS = ? WHERE REIMBURSEMENT_ID = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, update);
@@ -63,7 +61,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 
 	@Override
 	public List<Reimbursement> viewAllCompletedReimbursement() throws SQLException {
-		Connection conn = cf.getConnection();
+		Connection conn = ConnFactory.getConnectionFromFile("database.properties");
 		String sql = "SELECT * FROM REIMBURSEMENTS WHERE REIMBURSEMENT_STS = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, "PAID");
@@ -86,7 +84,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 	@Override
 	public void createReimbursement(int emp_id, int manager_id, double amount, String status, String reason, Blob image)
 			throws SQLException {
-		Connection conn = cf.getConnection();
+		Connection conn = ConnFactory.getConnectionFromFile("database.properties");
 		String sql = "INSERT INTO REIMBURSEMENTS VALUES(SQ_REIMBURSEMENT_ID.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, emp_id);

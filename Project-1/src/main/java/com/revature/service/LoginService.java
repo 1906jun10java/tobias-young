@@ -3,15 +3,17 @@ package com.revature.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.beans.Credentials;
 import com.revature.beans.Employee;
 import com.revature.daoimp.EmployeeDAOImp;
 
 public class LoginService {
 
 	private EmployeeDAOImp edao = new EmployeeDAOImp();
+	private List<Employee> eList = null;
 
 	public Employee Login(String username, String password) {
-		List<Employee> eList = null;
+		
 		try {
 			eList = edao.getEmployeeList();
 		} catch (SQLException e1) {
@@ -29,5 +31,20 @@ public class LoginService {
 		} else {
 			return null;
 		}
+	}
+	
+	public Employee Login(Credentials c) {
+		try {
+			eList = edao.getEmployeeList();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(Employee emp : eList) {
+			if(c.getUsername().equals(emp.getUsername()) && c.getPassword().equals(emp.getPassword())) {
+				return emp;
+			}
+		}
+		return null;
 	}
 }
