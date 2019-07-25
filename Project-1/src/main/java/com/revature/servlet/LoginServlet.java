@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.beans.Credentials;
 import com.revature.beans.Employee;
 import com.revature.service.LoginService;
@@ -19,8 +21,9 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 */
 	private static final long serialVersionUID = -7683535433031041472L;
+	//private EmployeeDAOImp edao = new EmployeeDAOImp();
 	private LoginService login;
-	// private ObjectMapper om; // used for converting Java objects to JSON
+	private ObjectMapper om = new ObjectMapper(); // used for converting Java objects to JSON
 
 	public LoginServlet() {
 		login = new LoginService();
@@ -36,8 +39,13 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("username", e.getUsername());
 			session.setAttribute("name", e.getEmp_name());
 			session.setAttribute("managerID", e.getManager_id());
-			session.setAttribute("problem", null);
-			resp.sendRedirect("EmployeeMenu.html");
+			session.setAttribute("managerStatus", login.ManagerStatus(e.getEmp_id()));
+			//session.setAttribute("problem", null);
+			
+			Cookie managerStatus = new Cookie("sessionCookie", om.writeValueAsString(session.getAttribute("managerStatus")));
+			resp.addCookie(managerStatus);
+			
+			resp.sendRedirect("menu");
 		} else {
 			session.setAttribute("problem", "invalid credentials");
 			resp.sendRedirect("login");

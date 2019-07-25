@@ -15,13 +15,13 @@ public class Employee {
 		this.password = password;
 	}
 
-	private int emp_id;
-	private int manager_id;
+	private Integer emp_id;
+	private Integer manager_id;
 	private String emp_name;
 	private String username;
 	private String password;
 
-	public int getEmp_id() {
+	public Integer getEmp_id() {
 		return emp_id;
 	}
 
@@ -29,7 +29,7 @@ public class Employee {
 		this.emp_id = emp_id;
 	}
 
-	public int getManager_id() {
+	public Integer getManager_id() {
 		return manager_id;
 	}
 

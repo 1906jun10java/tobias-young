@@ -47,4 +47,15 @@ public class LoginService {
 		}
 		return null;
 	}
+	
+	public boolean ManagerStatus(int id) {
+		boolean status = false;
+		try {
+			status = edao.isManager(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return status;
+	}
 }
