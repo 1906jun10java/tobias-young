@@ -51,9 +51,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnFactory {
 	
@@ -66,7 +70,7 @@ public class ConnFactory {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			c = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("usr"), prop.getProperty("password"));
 		} catch(ClassNotFoundException ex) {
-			System.out.println("unable to load driver class!");
+			ex.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

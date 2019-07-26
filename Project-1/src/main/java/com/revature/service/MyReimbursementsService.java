@@ -17,10 +17,8 @@ public class MyReimbursementsService {
 		try {
 			jsonString = om.writeValueAsString(rdao.viewReimbursementsFor(employeeId));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -32,10 +30,8 @@ public class MyReimbursementsService {
 		try {
 			jsonString = om.writeValueAsString(rdao.getReimbursementList(employeeId));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -47,10 +43,8 @@ public class MyReimbursementsService {
 		try {
 			jsonString = om.writeValueAsString(rdao.viewAllCompletedReimbursement());
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

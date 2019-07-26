@@ -19,7 +19,7 @@ public class EmployeeListServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		String jsonString = om.writeValueAsString(empServ.employeeListString());
+		String jsonString = empServ.employeeListString();
 		resp.getWriter().write(jsonString);
 	}
 	

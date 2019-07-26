@@ -16,10 +16,8 @@ public class EmployeeService {
 		try {
 			jsonString = om.writeValueAsString(edao.getEmployeeList());
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

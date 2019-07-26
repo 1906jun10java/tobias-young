@@ -394,29 +394,31 @@ function ClickEmployee(){
 	tableHeader6.innerHTML = "Employee ID&nbsp&nbsp&nbsp&nbsp&nbsp";
 	let tableHeader2 = document.createElement("th");
 	tableHeader2.innerHTML = "Manager ID&nbsp&nbsp&nbsp&nbsp&nbsp";
-	let tableHeader3 = document.createElement("th");
-	table.append(tableHeader1, tableHeader6, tableHeader2);
+	headerRow.append(tableHeader1, tableHeader6, tableHeader2);
+	table.append(headerRow);
+	pageDiv.append(submitted, table);
 	
 	xhr.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
 			data = xhr.response;
+			console.log(data);
 			parse = JSON.parse(data);
-			console.log(parse);
-			for(let r of parse){
+			for(let e of parse){
+				console.log(e);
 				let row = document.createElement("tr");
 				let id = document.createElement("td");
-				id.innerText = r.emp_id;
+				id.innerText = e.emp_id;
 				let empName = document.createElement("td");
-				empName.innerHTML = r.emp_name;
+				empName.innerText = e.emp_name;
 				let managerID = document.createElement("td");
-				managerID.innerText = r.manager_id;
+				managerID.innerText = e.manager_id;
 				
 				row.append(empName, id, managerID);
 				table.appendChild(row);
 				}
+			
 			}
 	};
-	pageDiv.append(submitted, table);
 	xhr.open("GET", "http://localhost:8087/Project-1/employeeList");
 	xhr.send();
 }

@@ -17,7 +17,6 @@ public class LoginService {
 		try {
 			eList = edao.getEmployeeList();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Employee e = null;
@@ -37,7 +36,6 @@ public class LoginService {
 		try {
 			eList = edao.getEmployeeList();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for(Employee emp : eList) {
@@ -53,7 +51,6 @@ public class LoginService {
 		try {
 			status = edao.isManager(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return status;
