@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("name", e.getEmp_name());
 			session.setAttribute("managerID", e.getManager_id());
 			session.setAttribute("managerStatus", login.ManagerStatus(e.getEmp_id()));
+			session.setAttribute("employee", e);
 			//session.setAttribute("problem", null);
 			
 			Cookie managerStatus = new Cookie("sessionCookie", om.writeValueAsString(session.getAttribute("managerStatus")));

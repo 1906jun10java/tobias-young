@@ -39,14 +39,13 @@ function menuOnLoad(managerStatus){
     let logout = document.createElement("li");
     logout.id = "logout";
     logout.class = "nav-item";
-    let logoutLink = document.createElement("input");
+    let logoutLink = document.createElement("form");
     logoutLink.id = "logoutLink";
     logoutLink.class = "nav-link";
-    logoutLink.innerText = "Logout";
-    logoutLink.type = "submit";
-    logoutLink.formaction = "logout";
-    logoutLink.formmethod = "GET";
-    
+    logoutLink.action = "logout";
+    let logoutButton = document.createElement("input");
+    logoutButton.type = "submit";
+    logoutButton.value = "Logout";
 
     info.appendChild(infoLink);
     reimbursement.appendChild(reimburseLink);
@@ -79,26 +78,71 @@ function menuOnLoad(managerStatus){
         elem.append(employeeManager);
     }
     elem.append(logout);
+    logout.append(logoutLink);
+    logoutLink.append(logoutButton);
 }
 
 function ClickInfo(){
-	if(document.getElementById("pageDiv")){
-		removeElement("pageDiv");
-	}
-	let pageDiv = document.createElement("div");
-	pageDiv.id = "pageDiv";
-	
-	let employeeHeader = document.createElement("h1");
-	employeeHeader.innerText = "Your Employee Information!";
-	
-	let editButton = document.createElement("button");
-	editButton.innerText = "Change Info";
-	editButton.type="button";
-	
-	let elem = document.getElementById("display");
-	elem.append(pageDiv);
-	pageDiv.appendChild(employeeHeader);
-	pageDiv.appendChild(editButton);
+	//get info from database
+	let dataJson;
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			data = xhr.response;	
+			
+			if(document.getElementById("pageDiv")){
+				removeElement("pageDiv");
+			}
+			let pageDiv = document.createElement("div");
+			pageDiv.id = "pageDiv";
+			
+			let employeeHeader = document.createElement("h1");
+			employeeHeader.innerText = "Your Employee Information!";
+			
+			let editButton = document.createElement("button");
+			editButton.id = "editButton";
+			editButton.innerText = "Change Info";
+			editButton.type="button";
+			
+			let elem = document.getElementById("display");
+			elem.append(pageDiv);
+			pageDiv.appendChild(employeeHeader);
+			
+			let infoForm = document.createElement("form");
+			infoForm.id = "infoForm";
+			
+			let employeeName = document.createElement("input");
+			employeeName.id = "employeeName";
+			employeeName.name = "Name";
+			employeeName.value = data.emp_name;
+			
+			let username = document.createElement("input");
+			username.id = "employeeUsername";
+			username.value = data.username;
+			username.name = "Username";
+			username.innerText = username.name;
+			
+			pageDiv.appendChild(infoForm);
+			infoForm.append(employeeName, username, editButton);
+			
+			document.getElementById("editButton").addEventListener("click", updateUser);
+		}
+	};
+	xhr.open("GET", "http://localhost:8087/Project-1/info");
+	xhr.responseType = "json";
+	xhr.send();
+}
+
+function updateUser(empId, username, name){
+	empId = data.emp_id;
+	username = employeeUsername.value;
+	name = employeeName.value;
+	let send = {"id":empId, "name":name, "username":username};
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8087/Project-1/updateInfo");
+	xhr.setRequestHeader("Data", send);
+	xhr.send();
+	console.log(send);
 }
 
 function ClickReimbursement(){
@@ -153,6 +197,6 @@ function ClickLogout(){
 			console.log("Logout Successful");
 		}
 	};
-	xhr.open("GET", "logout");
+	xhr.open("GET", "http://localhost:8087/Project-1/logout", true);
 	xhr.send();
 }
