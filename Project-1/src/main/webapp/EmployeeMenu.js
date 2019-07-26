@@ -84,7 +84,6 @@ function menuOnLoad(managerStatus){
 
 function ClickInfo(){
 	//get info from database
-	let dataJson;
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
@@ -120,7 +119,6 @@ function ClickInfo(){
 			username.id = "employeeUsername";
 			username.value = data.username;
 			username.name = "Username";
-			username.innerText = username.name;
 			
 			pageDiv.appendChild(infoForm);
 			infoForm.append(employeeName, username, editButton);
@@ -146,6 +144,8 @@ function updateUser(empId, username, name){
 }
 
 function ClickReimbursement(){
+	let xhr = new XMLHttpRequest();
+	
 	if(document.getElementById("pageDiv")){
 		removeElement("pageDiv");
 	}
@@ -158,6 +158,67 @@ function ClickReimbursement(){
 	let elem = document.getElementById("display");
 	elem.append(pageDiv);
 	pageDiv.appendChild(reimbursementHeader);
+	
+	xhr.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			data = xhr.response;
+			parse = JSON.parse(data);
+			let submitted = document.createElement("h2");
+			submitted.innerText = "Submitted Reimbursements"
+			let table = document.createElement("table");
+			table.id = "table";
+			let headerRow = document.createElement("tr");
+			let tableHeader1 = document.createElement("th");
+			tableHeader1.innerHTML = "Reimbursement ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+			let tableHeader2 = document.createElement("th");
+			tableHeader2.innerHTML = "Amount&nbsp&nbsp&nbsp&nbsp&nbsp";
+			let tableHeader3 = document.createElement("th");
+			tableHeader3.innerHTML = "Status&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+			let tableHeader4 = document.createElement("th");
+			tableHeader4.innerText = "Reason";
+			pageDiv.appendChild(submitted);
+			pageDiv.appendChild(table);
+			table.append(tableHeader1, tableHeader2, tableHeader3, tableHeader4);
+			
+			for(let r of parse){
+				let row = document.createElement("tr");
+				let id = document.createElement("td");
+				id.innerText = r.reimbursementID;
+				let amount = document.createElement("td");
+				amount.innerText = r.reimbursementAmt;
+				let status = document.createElement("td");
+				status.innerText = r.status;
+				let reason = document.createElement("td");
+				reason.innerText = r.reason;
+				
+				row.append(id, amount, status, reason);
+				table.append(row);
+				
+			}
+		};
+	}
+	xhr.open("GET", "http://localhost:8087/Project-1/myReimburse");
+	xhr.send();
+	
+	let addHeader = document.createElement("h2");
+	addHeader.innerText = "Submit a new Reimbursement";
+	
+	let reimbursementForm = document.createElement("form");
+	reimbursementForm.id = "reimForm";
+	let entries = document.createElement("fieldset");
+	let reimAmount = document.createElement("input");
+	reimAmount.placeholder = "Reimbursement Amount";
+	let reimReason = document.createElement("input");
+	reimReason.placeholder = "Reason";
+	let reimSubmit = document.createElement("button");
+	reimSubmit.formaction = "newReim";
+	reimSubmit.innerText = "Submit";
+	reimSubmit.type = "button";
+	
+	entries.append(reimAmount, reimReason, reimSubmit);
+	reimbursementForm.appendChild(entries);
+	pageDiv.appendChild(addHeader)
+	pageDiv.appendChild(reimbursementForm);
 }
 
 function ClickManager(){
