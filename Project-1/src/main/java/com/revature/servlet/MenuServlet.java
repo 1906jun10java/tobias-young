@@ -16,9 +16,9 @@ public class MenuServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		HttpSession session = req.getSession();
 		if(session.getAttribute("managerStatus").toString() == "true") {
-			resp.addHeader("managerStatus", "true");
+			resp.getWriter().write("true");
 		} else {
-			resp.addHeader("managerStatus", "false");
+			resp.getWriter().write("false");
 		}
 		req.getRequestDispatcher("EmployeeMenu.html").forward(req, resp);
 	}

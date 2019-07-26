@@ -1,15 +1,22 @@
 window.onload = function(){
 	
-	let managerStatus = true;
-        menuOnLoad(managerStatus);
-        document.getElementById("infoLink").addEventListener("click", ClickInfo);
-        document.getElementById("reimburseLink").addEventListener("click", ClickReimbursement);
-        if (managerStatus == true){
-        	document.getElementById("managerLink").addEventListener("click", ClickManager);
-        	
-        	document.getElementById("employeeLink").addEventListener("click", ClickEmployee);
-        }
-        document.getElementById("logoutLink").addEventListener("click", ClickLogout);        
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(this.readyState ==4 && this.status == 200){
+			let managerStatus = true;
+			menuOnLoad(managerStatus);
+	        document.getElementById("infoLink").addEventListener("click", ClickInfo);
+	        document.getElementById("reimburseLink").addEventListener("click", ClickReimbursement);
+	        if (managerStatus == true){
+	        	document.getElementById("managerLink").addEventListener("click", ClickManager);
+	        	
+	        	document.getElementById("employeeLink").addEventListener("click", ClickEmployee);
+	        }
+	        document.getElementById("logoutLink").addEventListener("click", ClickLogout); 
+		}
+	};
+	xhr.open("GET", "http://localhost:8087/Project-1/menu");
+	xhr.send();           
 }
 
 function removeElement(elementId) {
@@ -222,18 +229,143 @@ function ClickReimbursement(){
 }
 
 function ClickManager(){
+	let xhr = new XMLHttpRequest();
+	let xhr2 = new XMLHttpRequest();
 	if(document.getElementById("pageDiv")){
-		removeElement("pageDiv");
+				removeElement("pageDiv");
 	}
 	let pageDiv = document.createElement("div");
 	pageDiv.id = "pageDiv";
-	
+
 	let managerHeader = document.createElement("h1");
 	managerHeader.innerText = "Manager Console";
 	
 	let elem = document.getElementById("display");
 	elem.append(pageDiv);
 	pageDiv.appendChild(managerHeader);
+	
+	let Div1 = document.createElement("div");
+	let submitted = document.createElement("h2");
+	submitted.innerText = "Submitted Reimbursements"
+	let table = document.createElement("table");
+	table.id = "table";
+	let headerRow = document.createElement("tr");
+	let tableHeader1 = document.createElement("th");
+	tableHeader1.innerHTML = "Reimbursement ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader6 = document.createElement("th");
+	tableHeader6.innerHTML = "Employee ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader2 = document.createElement("th");
+	tableHeader2.innerHTML = "Amount&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader3 = document.createElement("th");
+	tableHeader3.innerHTML = "Status&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader4 = document.createElement("th");
+	tableHeader4.innerHTML = "Reason&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader5 = document.createElement("th");
+	tableHeader5.innerText = "Approve/Deny";
+	Div1.appendChild(submitted);
+	Div1.appendChild(table);
+	table.append(tableHeader1, tableHeader6, tableHeader2, tableHeader3, tableHeader4, tableHeader5);
+	
+	console.log(xhr);
+	xhr.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			data = xhr.response;
+			parse = JSON.parse(data);
+			console.log(parse);
+			for(let r of parse){
+				if(r.status !== "PAID"){
+				let row = document.createElement("tr");
+				let id = document.createElement("td");
+				id.innerText = r.reimbursementID;
+				let empID = document.createElement("td");
+				empID.innerHTML = r.emp_id;
+				let amount = document.createElement("td");
+				amount.innerText = r.reimbursementAmt;
+				let status = document.createElement("td");
+				status.innerText = r.status;
+				let reason = document.createElement("td");
+				reason.innerText = r.reason;
+				let approve = document.createElement("button");
+				approve.innerText = "Approve";
+				let deny = document.createElement("button");
+				deny.innerText = "Deny";
+				let approveDeny = document.createElement("td");
+				
+				approveDeny.append(approve, deny);
+				row.append(id, empID, amount, status, reason, approveDeny);
+				table.appendChild(row);
+				}
+			}
+		}
+		
+	};
+	xhr.open("GET", "http://localhost:8087/Project-1/employeeReimburse");
+	xhr.send();
+	
+	let Div2 = document.createElement("div");
+	let completeHeader = document.createElement("h2");
+	completeHeader.innerText = "Fulfilled Reimbursements";
+	Div2.appendChild(completeHeader);
+	
+	let table2 = document.createElement("table");
+	table2.id = "table2";
+	headerRow = document.createElement("tr");
+	tableHeader1 = document.createElement("th");
+	tableHeader1.innerHTML = "Reimbursement ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	tableHeader6 = document.createElement("th");
+	tableHeader6.innerHTML = "Employee ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	tableHeader2 = document.createElement("th");
+	tableHeader2.innerHTML = "Amount&nbsp&nbsp&nbsp&nbsp&nbsp";
+	tableHeader3 = document.createElement("th");
+	tableHeader3.innerHTML = "Status&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+	tableHeader4 = document.createElement("th");
+	tableHeader4.innerHTML = "Reason&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+	Div2.appendChild(table2);
+	table2.append(tableHeader1, tableHeader6, tableHeader2, tableHeader3, tableHeader4);
+	
+	xhr2.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			data = xhr2.response;
+			parse = JSON.parse(data);
+			console.log(parse);
+			for(let r of parse){
+				if(r.status == "PAID"){
+					let row = document.createElement("tr");
+					let id = document.createElement("td");
+					id.innerText = r.reimbursementID;
+					let empID = document.createElement("td");
+					empID.innerHTML = r.emp_id;
+					let amount = document.createElement("td");
+					amount.innerText = r.reimbursementAmt;
+					let status = document.createElement("td");
+					status.innerText = r.status;
+					let reason = document.createElement("td");
+					reason.innerText = r.reason;
+				
+					row.append(id, empID, amount, status, reason);
+					table2.appendChild(row);
+				}
+			}
+		}
+		
+	};
+	xhr2.open("GET", "http://localhost:8087/Project-1/completed");
+	xhr2.send();
+	
+	let Div3 = document.createElement("div");
+	let findHeader = document.createElement("h2");
+	findHeader.innerText = "Find Reimbursements by Employee ID";
+	let form = document.createElement("form");
+	let fields = document.createElement("fieldset");
+	let employeeIDIn = document.createElement("input");
+	employeeIDIn.placeholder = "Employee ID";
+	let button = document.createElement("button");
+	button.innerText = "Find";
+	fields.append(employeeIDIn, button);
+	form.append(fields);
+	Div3.append(findHeader);
+	Div3.append(form);
+	pageDiv.append(Div1, Div2, Div3);
 }
 
 function ClickEmployee(){

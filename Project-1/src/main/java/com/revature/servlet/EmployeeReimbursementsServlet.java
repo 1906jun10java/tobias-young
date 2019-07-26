@@ -14,9 +14,8 @@ import com.revature.dao.ReimbursementDAO;
 import com.revature.daoimp.ReimbursementDAOImp;
 import com.revature.service.MyReimbursementsService;
 
-@WebServlet("/myReimburse")
-public class ViewMyReimbursementsServlet extends HttpServlet {
-
+@WebServlet("/employeeReimburse")
+public class EmployeeReimbursementsServlet extends HttpServlet {
 	ObjectMapper om = new ObjectMapper();
 	ReimbursementDAO rdao = new ReimbursementDAOImp();
 	MyReimbursementsService myReim = new MyReimbursementsService();
@@ -26,7 +25,7 @@ public class ViewMyReimbursementsServlet extends HttpServlet {
 		String jsonString = "";
 		HttpSession session = req.getSession();
 		int employeeId = (int) session.getAttribute("employeeId");
-		jsonString = myReim.getReimbursementsAsString(employeeId);
+		jsonString = myReim.getManagedEmployeeReimbursements(employeeId);
 		resp.getWriter().write(jsonString);
 	}
 	

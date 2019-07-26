@@ -14,24 +14,22 @@ import com.revature.dao.ReimbursementDAO;
 import com.revature.daoimp.ReimbursementDAOImp;
 import com.revature.service.MyReimbursementsService;
 
-@WebServlet("/myReimburse")
-public class ViewMyReimbursementsServlet extends HttpServlet {
+@WebServlet("/completed")
+public class CompletedReimbursementServlet extends HttpServlet {
 
 	ObjectMapper om = new ObjectMapper();
 	ReimbursementDAO rdao = new ReimbursementDAOImp();
 	MyReimbursementsService myReim = new MyReimbursementsService();
-	
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String jsonString = "";
-		HttpSession session = req.getSession();
-		int employeeId = (int) session.getAttribute("employeeId");
-		jsonString = myReim.getReimbursementsAsString(employeeId);
+		jsonString = myReim.getCompletedReimbursements();
 		resp.getWriter().write(jsonString);
 	}
-	
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		doGet(req,resp);
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
 	}
 }
