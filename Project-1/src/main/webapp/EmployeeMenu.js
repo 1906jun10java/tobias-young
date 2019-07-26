@@ -369,6 +369,7 @@ function ClickManager(){
 }
 
 function ClickEmployee(){
+	let xhr = new XMLHttpRequest();
 	if(document.getElementById("pageDiv")){
 		removeElement("pageDiv");
 	}
@@ -381,6 +382,43 @@ function ClickEmployee(){
 	let elem = document.getElementById("display");
 	elem.append(pageDiv);
 	pageDiv.appendChild(employeeHeader);
+	
+	let submitted = document.createElement("h2");
+	submitted.innerText = "Employee List"
+	let table = document.createElement("table");
+	table.id = "table";
+	let headerRow = document.createElement("tr");
+	let tableHeader1 = document.createElement("th");
+	tableHeader1.innerHTML = "Employee Name&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader6 = document.createElement("th");
+	tableHeader6.innerHTML = "Employee ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader2 = document.createElement("th");
+	tableHeader2.innerHTML = "Manager ID&nbsp&nbsp&nbsp&nbsp&nbsp";
+	let tableHeader3 = document.createElement("th");
+	table.append(tableHeader1, tableHeader6, tableHeader2);
+	
+	xhr.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			data = xhr.response;
+			parse = JSON.parse(data);
+			console.log(parse);
+			for(let r of parse){
+				let row = document.createElement("tr");
+				let id = document.createElement("td");
+				id.innerText = r.emp_id;
+				let empName = document.createElement("td");
+				empName.innerHTML = r.emp_name;
+				let managerID = document.createElement("td");
+				managerID.innerText = r.manager_id;
+				
+				row.append(empName, id, managerID);
+				table.appendChild(row);
+				}
+			}
+	};
+	pageDiv.append(submitted, table);
+	xhr.open("GET", "http://localhost:8087/Project-1/employeeList");
+	xhr.send();
 }
 
 function ClickLogout(){
